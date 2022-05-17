@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { getConfig, parseConfig } from './config/configuration';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { getConfig, parseConfig } from './config/configuration';
       ttl: 60 * 60,
       limit: 10,
     }),
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
