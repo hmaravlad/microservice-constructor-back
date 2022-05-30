@@ -4,4 +4,5 @@ export interface Project {
   userId: number;
   createdAt: Date;
   updatedAt: Date;
+  fields: string;
 }
