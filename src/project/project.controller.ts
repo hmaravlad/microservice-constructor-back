@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -61,5 +62,15 @@ export class ProjectController {
       saveProjectDto.project,
       saveProjectDto.entities,
     );
+  }
+
+  @UseGuards(CookieAuthenticationGuard)
+  @Delete(':id')
+  async RemoveProject(
+    @Req() request: RequestWithUser,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const { user } = request;
+    this.projectService.removeProject(user, id);
   }
 }

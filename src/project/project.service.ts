@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from 'src/auth/entities/user.entity';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ReturnProjectDto } from './dto/return-project.dto';
@@ -34,8 +38,16 @@ export class ProjectService {
 
   async getProject(user: User, projectId: number): Promise<ReturnProjectDto> {
     const project = await this.projectQueries.getProject(projectId);
+    if (!project) throw new NotFoundException();
     if (project.userId !== user.id) throw new ForbiddenException();
     const fullProject = await this.projectQueries.getFullProject(projectId);
     return fullProject;
+  }
+
+  async removeProject(user: User, projectId: number): Promise<void> {
+    const project = await this.projectQueries.getProject(projectId);
+    if (!project) throw new NotFoundException();
+    if (project.userId !== user.id) throw new ForbiddenException();
+    await this.projectQueries.deleteProject(projectId);
   }
 }

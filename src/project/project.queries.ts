@@ -42,15 +42,12 @@ export class ProjectQueries {
     project: CreateProjectDto,
     entities: Entity[],
   ) {
-    console.dir({ projectId });
     await this.knex('project').where('id', projectId).update({
       name: project.name,
       fieldsjson: project.fields,
       updatedat: new Date(),
     });
-    console.log(1);
     await this.knex('entity').delete().where('project_id', projectId);
-    console.log(2);
     if (entities.length > 0) {
       await this.knex('entity').insert(
         entities.map((e) => ({
@@ -63,7 +60,6 @@ export class ProjectQueries {
         })),
       );
     }
-    console.log(3);
   }
 
   async getFullProject(projectId): Promise<ReturnProjectDto> {
@@ -110,5 +106,10 @@ export class ProjectQueries {
         })
         .where('id', projectId)
     )[0];
+  }
+
+  async deleteProject(projectId: number): Promise<void> {
+    await this.knex('entity').delete().where('project_id', projectId);
+    await this.knex('project').delete().where('id', projectId);
   }
 }
