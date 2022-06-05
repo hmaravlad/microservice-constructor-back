@@ -1,8 +1,8 @@
-FROM node:latest
+FROM node:14-alpine
 
 WORKDIR /microservice-constructor-back
 
-COPY package.json ./
+COPY ./ ./
 
 RUN npm install
 
